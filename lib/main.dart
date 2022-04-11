@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:bytebank/screen/lista.dart';
+import 'package:bytebank/screen/dashboard.dart';
 
 void main() {
   runApp(ByteBank());
@@ -22,7 +22,7 @@ class ByteBank extends StatelessWidget {
           accentColor: Colors.orangeAccent,
         ),
       ),
-      home: ListaTransferencia(),
+      home: Dashboard(),
       debugShowCheckedModeBanner: false,
     );
   }

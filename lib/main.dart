@@ -1,5 +1,3 @@
-import 'package:bytebank/components/contact_new.dart';
-import 'package:bytebank/database/app_database.dart';
 import 'package:flutter/material.dart';
 import 'package:bytebank/screen/dashboard.dart';
 

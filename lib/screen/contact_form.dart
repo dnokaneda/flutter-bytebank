@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:bytebank/database/dao/contact_dao.dart';
 import 'package:bytebank/components/input.dart';
 import 'package:bytebank/components/confirm_button.dart';
 import 'package:bytebank/components/contact_new.dart';
@@ -6,6 +7,7 @@ import 'package:bytebank/components/contact_new.dart';
 class Contact_form extends StatefulWidget {
   final TextEditingController _controllerContato = TextEditingController();
   final TextEditingController _controllerAccount = TextEditingController();
+  final ContactDao _dao = ContactDao();
 
   @override
   State<StatefulWidget> createState() => _Contact_form();
@@ -39,9 +41,11 @@ class _Contact_form extends State<Contact_form> {
               final int? account = int.tryParse(widget._controllerAccount.text);
 
               if (contato != null && account != null) {
-                final requisicao =
-                    Contact_new(id: 0, name: contato, accountNumber: account);
-                Navigator.pop(context, requisicao);
+                final Contact_new requisicao =
+                    Contact_new(name: contato, accountNumber: account);
+                widget._dao.save(requisicao).then(
+                      (id) => Navigator.pop(context),
+                    );
               }
             },
           ),

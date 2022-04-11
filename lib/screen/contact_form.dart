@@ -5,7 +5,7 @@ import 'package:bytebank/components/contact_new.dart';
 
 class Contact_form extends StatefulWidget {
   final TextEditingController _controllerContato = TextEditingController();
-  final TextEditingController _controllerValor = TextEditingController();
+  final TextEditingController _controllerAccount = TextEditingController();
 
   @override
   State<StatefulWidget> createState() => _Contact_form();
@@ -27,7 +27,7 @@ class _Contact_form extends State<Contact_form> {
             keyboard: TextInputType.text,
           ),
           Input(
-            controller: widget._controllerValor,
+            controller: widget._controllerAccount,
             label: 'VALOR',
             hint: 'ex: 100.0',
             icon: true,
@@ -36,11 +36,11 @@ class _Contact_form extends State<Contact_form> {
           Confirm_button(
             onPress: () {
               final String? contato = widget._controllerContato.text;
-              final double? valor =
-                  double.tryParse(widget._controllerValor.text);
+              final int? account = int.tryParse(widget._controllerAccount.text);
 
-              if (contato != null && valor != null) {
-                final requisicao = Contact_new(contato: contato, valor: valor);
+              if (contato != null && account != null) {
+                final requisicao =
+                    Contact_new(id: 0, name: contato, accountNumber: account);
                 Navigator.pop(context, requisicao);
               }
             },

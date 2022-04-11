@@ -1,14 +1,16 @@
 class Contact_new {
-  final String? contato;
-  final double? valor;
+  final int? id;
+  final String name;
+  final int accountNumber;
 
   const Contact_new({
-    this.contato,
-    this.valor,
+    this.id,
+    required this.name,
+    required this.accountNumber,
   });
 
   @override
   String toString() {
-    return 'Contact: { conta: $contato , valor: $valor}';
+    return 'Contact: { conta: $name , valor: $accountNumber}';
   }
 }

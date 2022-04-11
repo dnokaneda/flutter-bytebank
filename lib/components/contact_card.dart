@@ -14,8 +14,8 @@ class Contact_card extends StatelessWidget {
     return Card(
       child: ListTile(
         leading: const Icon(Icons.monetization_on),
-        title: Text(contact.contato.toString()),
-        subtitle: Text(contact.valor.toString()),
+        title: Text(contact.name.toString()),
+        subtitle: Text(contact.accountNumber.toString()),
         trailing: const Icon(Icons.more_vert),
       ),
     );

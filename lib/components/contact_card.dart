@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:bytebank/components/contact_new.dart';
+import 'package:bytebank/screen/transaction_form.dart';
 
 class Contact_card extends StatelessWidget {
   final Contact_new contact;
@@ -13,10 +14,14 @@ class Contact_card extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: const Icon(Icons.monetization_on),
+        onTap: () => { 
+          print('onClick contact card'),
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => Transaction_form(contact))
+          ),
+        },
         title: Text(contact.name.toString()),
         subtitle: Text(contact.accountNumber.toString()),
-        trailing: const Icon(Icons.more_vert),
       ),
     );
   }

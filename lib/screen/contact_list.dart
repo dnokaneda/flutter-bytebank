@@ -29,11 +29,13 @@ class _Contact_list extends State<Contact_list> {
 
             case ConnectionState.done:
               final List<Contact_new> contacts = snapshot.data;
-
+              
               return ListView.builder(
                 itemCount: contacts.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return Contact_card(contact: contacts[index]);
+                  return Contact_card(
+                    contact: contacts[index],              
+                  );
                 },
               );
 

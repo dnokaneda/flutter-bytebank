@@ -2,7 +2,7 @@ import 'package:bytebank/components/transaction_card.dart';
 import 'package:bytebank/components/transaction_new.dart';
 import 'package:bytebank/components/loading.dart';
 import 'package:bytebank/components/centered_message.dart';
-import 'package:bytebank/api/webclient.dart';
+import 'package:bytebank/api/transaction_webcliente.dart';
 import 'package:flutter/material.dart';
 
 class Transaction_list extends StatefulWidget {
@@ -11,6 +11,8 @@ class Transaction_list extends StatefulWidget {
 }
 
 class _Transaction_list extends State<Transaction_list> {
+  final TransactionWebClient _webClient = TransactionWebClient();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,13 +21,15 @@ class _Transaction_list extends State<Transaction_list> {
       ),
       body: FutureBuilder<List<Transaction_new>>(
         initialData: [],
-        future: findAll(),
+        future: _webClient.findAll(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
               return Loading();
 
             case ConnectionState.done:
+              print('TRANSACTION LIST :::');
+              print(snapshot);
               if (snapshot.hasData) {
                 final List<Transaction_new> transactions = snapshot.data;
                 return ListView.builder(

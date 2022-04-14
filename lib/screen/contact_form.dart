@@ -30,9 +30,8 @@ class _Contact_form extends State<Contact_form> {
           ),
           Input(
             controller: widget._controllerAccount,
-            label: 'VALOR',
+            label: 'ACCOUNT NUMBER',
             hint: 'ex: 100.0',
-            icon: true,
             keyboard: TextInputType.numberWithOptions(),
           ),
           Confirm_button(

@@ -9,6 +9,19 @@ class Transaction_new {
     required this.accountNumber,
   });
 
+  Transaction_new.fromJson(Map<String, dynamic> json) 
+    : value = json['value'],
+      contact = json['contact']['name'],
+      accountNumber = json['contact']['accountNumber'];
+
+  Map<String, dynamic> toJson() => {
+    'value': value,
+    'contact': {
+      'name': contact,
+      'accountNumber': accountNumber,
+    }
+  };
+
   @override
   String toString() {
     return 'Transaction: { value: $value , contact: $contact, accountNumber: $accountNumber}';

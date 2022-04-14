@@ -1,4 +1,4 @@
-import 'package:bytebank/api/webclient.dart';
+import 'package:bytebank/api/transaction_webcliente.dart';
 import 'package:bytebank/screen/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:bytebank/components/contact_new.dart';
@@ -15,6 +15,7 @@ class Transaction_form extends StatefulWidget {
 
 class _TransactionFormState extends State<Transaction_form> {
   final TextEditingController _valueController = TextEditingController();
+  final TransactionWebClient _webClient = TransactionWebClient();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class _TransactionFormState extends State<Transaction_form> {
                         accountNumber:  widget.contact.accountNumber,
                       );
 
-                      save(transactionCreated);
+                      _webClient.save(transactionCreated);
 
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => Dashboard())

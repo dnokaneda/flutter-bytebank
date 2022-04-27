@@ -1,8 +1,8 @@
 import 'package:bytebank/api/transaction_webcliente.dart';
-import 'package:bytebank/screen/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:bytebank/components/contact_new.dart';
 import 'package:bytebank/components/transaction_new.dart';
+import 'package:bytebank/components/transaction_auth_dialog.dart';
 
 class Transaction_form extends StatefulWidget {
   final Contact_new contact;
@@ -59,20 +59,22 @@ class _TransactionFormState extends State<Transaction_form> {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: ElevatedButton(
-                    child: Text('Transfer'), onPressed: () {                     
-                      
-                      final Transaction_new transactionCreated = Transaction_new(
-                        value: double.parse(_valueController.text),
-                        contact:  widget.contact.name,
-                        accountNumber:  widget.contact.accountNumber,
-                      );
-
-                      _webClient.save(transactionCreated);
-
-                      Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => Dashboard())
-                      );
-                      
+                    child: Text('Transfer'), onPressed: () { 
+                      showDialog(
+                        context: context, 
+                        builder: (contextDialog) {
+                          return Transaction_Auth_Dialog(
+                            onConfirm: (String password) {
+                              final Transaction_new transactionCreated = Transaction_new(
+                                value: double.parse(_valueController.text),
+                                contact:  widget.contact.name,
+                                accountNumber:  widget.contact.accountNumber,
+                              );
+                              _save(transactionCreated, password, context, _webClient);
+                            },
+                          );
+                        },
+                      );                   
                   },
                   ),
                 ),
@@ -83,4 +85,15 @@ class _TransactionFormState extends State<Transaction_form> {
       ),
     );
   }
+}
+
+void _save (
+  Transaction_new transactionCreated,
+  String password,
+  BuildContext context,
+  TransactionWebClient _webClient
+) async {
+  // debugPrint(password);
+  _webClient.save(transactionCreated, password);
+  Navigator.pop(context);
 }

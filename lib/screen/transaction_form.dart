@@ -1,6 +1,7 @@
 import 'package:bytebank/api/transaction_webcliente.dart';
 import 'package:flutter/material.dart';
 import 'package:bytebank/components/contact_new.dart';
+import 'package:bytebank/components/response_dialog.dart';
 import 'package:bytebank/components/transaction_new.dart';
 import 'package:bytebank/components/transaction_auth_dialog.dart';
 
@@ -60,22 +61,13 @@ class _TransactionFormState extends State<Transaction_form> {
                   width: double.maxFinite,
                   child: ElevatedButton(
                     child: Text('Transfer'), onPressed: () { 
-                      showDialog(
-                        context: context, 
-                        builder: (contextDialog) {
-                          return Transaction_Auth_Dialog(
-                            onConfirm: (String password) {
-                              final Transaction_new transactionCreated = Transaction_new(
-                                value: double.parse(_valueController.text),
-                                contact:  widget.contact.name,
-                                accountNumber:  widget.contact.accountNumber,
-                              );
-                              _save(transactionCreated, password, context, _webClient);
-                            },
-                          );
-                        },
-                      );                   
-                  },
+                      handleTransaction(
+                        _valueController, 
+                        context,
+                        widget.contact, 
+                        _webClient,
+                      ); // handleTransaction
+                    },
                   ),
                 ),
               )
@@ -87,13 +79,61 @@ class _TransactionFormState extends State<Transaction_form> {
   }
 }
 
-void _save (
+Future<void> handleTransaction(
+  TextEditingController _valueController,
+  BuildContext context,
+  Contact_new contact,
+  TransactionWebClient _webClient
+) async {
+  if(_valueController.text.isEmpty) {
+    showDialog(
+      context: context, 
+      builder: (contextDialog) {
+        return ResponseDialog(message: 'empty field');
+      },
+    );                        
+  } else {
+    showDialog(
+      context: context, 
+      builder: (contextDialog) {
+        return Transaction_Auth_Dialog(
+          onConfirm: (String password) {
+            final Transaction_new transactionCreated = Transaction_new(
+              value: double.parse(_valueController.text),
+              contact:  contact.name,
+              accountNumber:  contact.accountNumber,
+            );
+                                          
+            saveNew(transactionCreated, password, context, _webClient);
+          },
+        );
+      },
+    ); // showDialog
+  }
+}
+
+Future<void> saveNew(
   Transaction_new transactionCreated,
   String password,
   BuildContext context,
   TransactionWebClient _webClient
 ) async {
-  // debugPrint(password);
-  _webClient.save(transactionCreated, password);
-  Navigator.pop(context);
+  try {
+    await _webClient.save(transactionCreated, password);
+    Navigator.pop(context);
+    showDialog(
+      context: context, 
+      builder: (contextDialog) {
+        return SuccessDialog(message: 'successfull transaction');
+     },
+    );
+  } catch (error) {
+    final String message = error.toString().replaceAll('Exception: ', '');
+    showDialog(
+      context: context, 
+      builder: (contextDialog) {
+        return ResponseDialog(message: message);
+     },
+    );
+  }
 }

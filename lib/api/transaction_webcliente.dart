@@ -23,7 +23,12 @@ class TransactionWebClient {
       body: transactionJson,
     ).timeout(timeout);
 
-    return Transaction_new.fromJson(jsonDecode(res.body));
+    if (res.statusCode == 200) {
+      return Transaction_new.fromJson(jsonDecode(res.body));
+    }
+
+    _throwHttpError(res.statusCode);
+    throw Exception('Unknown error');
   }
 
   List<Transaction_new> _toTransactions(Response res) {
@@ -41,4 +46,13 @@ class TransactionWebClient {
 
     // return transactions;
   }
+
+  void _throwHttpError(int statusCode) {
+    throw Exception(_statusCodeResponses[statusCode]);
+  }
+
+  static final Map<int, String> _statusCodeResponses = {
+    400: 'there was an error submitting transaction',
+    401: 'authentication failed',
+  };
 }
